@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.104.2">
+  <title>Sign Up | Coffee Shop SCE</title>
+    {{> partials/favicons.hbs}}
+  <link href="/bootstrap.min.css" rel="stylesheet">
+  <link href="/signin.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+  <main class="form-signin w-100 m-auto">
+    <form method="POST" action="/signup">
+      <img class="mb-4" src="/favicon/apple-icon.png" alt="" width="150" height="150">
+      <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+
+        <div class="form-floating">
+            <input name="first-name" type="text" class="form-control" id="signup-form-firs-tname" placeholder="First Name" required>
+            <label for="floatingPassword">First Name</label>
+        </div>
+        <div class="form-floating">
+            <input name="last-name" type="text" class="form-control" id="signup-form-last-name" placeholder="Last Name" required>
+            <label for="floatingPassword">Last Name</label>
+        </div>
+      <div class="form-floating">
+        <input name="email" type="email" class="form-control" id="signup-form-email" placeholder="name@example.com" required>
+        <label for="signup-form-email">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input name="password" type="password" class="form-control" id="signup-form-password" placeholder="Password" required>
+        <label for="floatingPassword">Password</label>
+      </div>
+
+      <button class="w-100 btn btn-lg btn-primary" id="signup-form-submitter">Sign up</button>
+        <a href="/" class="w-100 btn btn-lg btn-light" id="signup-form-cancel">Cancel</a>
+    </form>
+      {{~#if isSecondAttempt}}
+          {{> partials/toast.hbs
+                  toastTitle="Signup"
+                  toastSubtitle="Unsuccessful"
+                  toastBody="Something is wrong with the submitted credentials, please try again"
+          }}
+      {{~/if~}}
+  </main>
+<script src="/script.js"></script>
+<script src="/bootstrap.bundle.min.js"></script>
+</body>
+</html>

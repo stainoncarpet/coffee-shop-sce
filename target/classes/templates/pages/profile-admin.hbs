@@ -1,0 +1,92 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>Profile | Coffee Shop SCE</title>
+    {{> partials/favicons.hbs}}
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+{{> partials/headerOther.hbs email=email role=role}}
+<main class="container">
+    <div class="bg-light p-5 rounded">
+        <h1>Admin panel</h1>
+        <a class="btn btn-primary" href="/admin/item/add" role="button">+Item</a>
+        <a class="btn btn-primary" href="/admin/table/add" role="button">+Table</a>
+    </div>
+    <h2 class="display-3">Consumables</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Item #</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">In Stock</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Set Image</th>
+        </tr>
+        </thead>
+        <tbody>
+            {{#items}}
+                <tr class="table">
+                    <th scope="row">{{ consumableId }}</th>
+                    <td>{{ title }}</td>
+                    <td>{{ description }}</td>
+                    <td>{{ price }}</td>
+                    <td>{{ inStock }}</td>
+                    <td>
+                        <a type="button" class="btn btn-outline-primary" href="/admin/item/edit/{{consumableId}}">VIEW/EDIT</a>
+                    </td>
+                    <td>
+                        <form method="post" action="/admin/item/upload/{{ consumableId }}" enctype='multipart/form-data'>
+                            <input class="form-control" type="file" name="image-file" id="image-file" accept=".jpg">
+                            <button type="submit" class="btn btn-outline-primary">Upload</button>
+                        </form>
+                    </td>
+                </tr>
+            {{/items}}
+        </tbody>
+    </table>
+    <h2 class="display-3">Tables</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Table #</th>
+            <th scope="col">Seats</th>
+            <th scope="col">Rate</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#tables}}
+            <tr class="table">
+                <th scope="row">{{ id }}</th>
+                <td>{{ seats }}</td>
+                <td>{{ rate }}</td>
+                <td>
+                    <a type="button" class="btn btn-outline-primary" href="/admin/table/edit/{{id}}">VIEW/EDIT</a>
+                </td>
+                <td>
+                    <form method="post" action="/admin/table/upload/{{ id }}" enctype='multipart/form-data'>
+                        <input class="form-control" type="file" name="image-file" id="image-file" accept=".jpg">
+                        <button type="submit" class="btn btn-outline-primary">Upload</button>
+                    </form>
+                </td>
+            </tr>
+        {{/tables}}
+        </tbody>
+    </table>
+
+</main>
+{{> partials/footerOther.hbs}}
+<script src="script.js"></script>
+<script src="bootstrap.bundle.min.js"></script>
+</body>
+</html>

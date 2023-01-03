@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>Add Item To Menu | Coffee Shop SCE</title>
+    <link href="/bootstrap.min.css" rel="stylesheet">
+    {{> partials/favicons.hbs}}
+    <!-- Custom styles for this template -->
+    <link href="/signin.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+
+<main class="form-signin w-100 m-auto">
+    <form method="post" action="/admin/item/add">
+        <img class="mb-4" src="/favicon/apple-icon.png" alt="" width="150" height="150">
+        <h1 class="h3 mb-3 fw-normal">Add New Menu Item</h1>
+
+        <div class="form-floating">
+            <input name="title" autocomplete="off" type="title" class="form-control" id="add-item-title" placeholder="Menu Item" required>
+            <label for="add-item-title">Title</label>
+        </div>
+        <div class="form-floating">
+            <input name="description" autocomplete="off" type="description" class="form-control" id="add-item-description" placeholder="Description" required>
+            <label for="add-item-description">Description</label>
+        </div>
+        <div class="form-floating">
+            <input name="price" autocomplete="off" type="text" class="form-control" id="add-item-price" placeholder="5" required>
+            <label for="add-item-price">Price</label>
+        </div>
+        <select name="item-type" class="form-select" aria-label="Default select example">
+            <option selected>Type...</option>
+            {{#types}}
+                <option value="{{this}}">{{ this }}</option>
+            {{/types}}
+        </select>
+        <div class="form-floating">
+            <input name="quantity" autocomplete="off" type="number" class="form-control" id="add-item-quantity" placeholder="5" required>
+            <label for="add-item-price">Quantity in stock</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Add</button>
+        <a href="/profile" class="w-100 btn btn-lg btn-light" id="signup-form-cancel">Back</a>
+    </form>
+</main>
+<script src="/script.js"></script>
+</body>
+
+</html>

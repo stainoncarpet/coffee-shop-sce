@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.104.2">
+  <title>Home | Coffee Shop SCE</title>
+  <link href="/bootstrap.min.css" rel="stylesheet">
+    {{> partials/favicons.hbs}}
+<meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#712cf9">
+  <!-- Custom styles for this template -->
+  <link href="/cover.css" rel="stylesheet">
+  <link href="/styles.css" rel="stylesheet">
+</head>
+
+<body class="d-flex h-100 text-center text-bg-dark" style="padding-top:0; min-height: 0">
+  <div class="container-xxl d-flex w-100 h-100 p-3 mx-auto flex-column">
+      {{> partials/headerHome.hbs jwt=jwt}}
+    <main class="px-3">
+      <h1>This Is Our Coffee Shop</h1>
+      <p class="lead">You can chill at our place. Open between 12 PM and 22 PM.</p>
+      <p class="lead">
+        <a class="btn btn-lg btn-secondary fw-bold border-white bg-white" href="/menu/new">Menu</a>
+      </p>
+    </main>
+      {{> partials/footerHome.hbs}}
+  </div>
+  <script src="/script.js"></script>
+</body>
+
+</html>

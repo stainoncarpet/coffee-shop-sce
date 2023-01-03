@@ -1,0 +1,139 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>Profile | Coffee Shop SCE</title>
+    {{> partials/favicons.hbs}}
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .form-button {
+            padding: 0!important;
+        }
+
+        .form-button input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+{{> partials/headerOther.hbs email=email role=role}}
+<main class="container">
+    <div class="bg-light p-5 rounded">
+        <h1>Barista panel</h1>
+    </div>
+    <h2 class="display-3">Pending orders</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Order #</th>
+            <th scope="col">Client #</th>
+            <th scope="col">VIP</th>
+            <th scope="col">Creation Date</th>
+            <th scope="col">Order Total</th>
+            <th scope="col">Ordered Items</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {{#orders}}
+                <tr class="table">
+                    <td scope="row">{{ id }}</td>
+                    <td>{{ clientId }}</td>
+                    <td>{{ isClientVip }}</td>
+                    <td>{{ creationDate }}</td>
+                    <td>${{ orderTotal }}</td>
+                    <td>
+                        {{#this.takeoutOrderItems}}
+                            {{quantity}} {{consumableTitle}}(s)<br />
+                        {{/this.takeoutOrderItems}}
+                    </td>
+                    <td>
+                        <div class="d-grid gap-2 col-6">
+                            {{~#if baristaId}}
+                                <form action="/barista/order/take/{{id}}" method="post" class="form-button">
+                                    <input type="submit" class="btn btn-outline-primary" value="ORDER TAKEN" disabled />
+                                </form>
+                            {{~^~}}
+                                <form action="/barista/order/take/{{id}}" method="post" class="form-button">
+                                    <input type="submit" class="btn btn-outline-primary" value="TAKE ORDER" />
+                                </form>
+                            {{~/if~}}
+                                <a type="button" class="btn btn-outline-primary" href="/barista/order/change/{{id}}">CHANGE ORDER</a>
+                            <form action="/barista/order/charge/{{id}}" method="post" class="form-button">
+                                <input type="submit" class="btn btn-outline-primary" value="COMPLETE ORDER" />
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {{/orders}}
+        </tbody>
+    </table>
+
+    <h2 class="display-3">Pending reservations</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Reservation #</th>
+            <th scope="col">Client #</th>
+            <th scope="col">VIP</th>
+            <th scope="col">Creation Date</th>
+            <th scope="col">Reservation Date</th>
+            <th scope="col">Reservation Total</th>
+            <th scope="col">Reserved Tables</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#reservations}}
+            <tr class="table">
+                <td scope="row">{{ reservationId }}</td>
+                <td>{{ clientId }}</td>
+                <td>{{ isClientVip }}</td>
+                <td>{{ creationDate }}</td>
+                <td>{{ reservationDate }}</td>
+                <td>${{ reservationTotal }}</td>
+
+                <td>
+                    {{#this.reservedTables}}
+                        Table: {{ tableId }},
+                        Seats: {{ seatsCount }},
+                        Rate: {{ hourlyRate }},
+                        Hour: {{ reservedHours }},
+                        Location: {{tableLocation}}<br />
+                    {{/this.reservedTables}}
+                </td>
+
+                <td>
+                    <div class="d-grid gap-2 col-6">
+                        {{~#if baristaId}}
+                            <form action="/barista/reservation/record/{{reservationId}}" method="post" class="form-button">
+                                <input type="submit" class="btn btn-outline-primary" value="RESERVATION RECORDED" disabled />
+                            </form>
+                        {{~^~}}
+                            <form action="/barista/reservation/record/{{reservationId}}" method="post" class="form-button">
+                                <input type="submit" class="btn btn-outline-primary" value="RECORD RESERVATION" />
+                            </form>
+                        {{~/if~}}
+                        <form action="/barista/reservation/charge/{{reservationId}}" method="post" class="form-button">
+                            <input type="submit" class="btn btn-outline-primary" value="COMPLETE RESERVATION" />
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {{/reservations}}
+        </tbody>
+    </table>
+
+
+</main>
+{{> partials/footerOther.hbs}}
+<script src="script.js"></script>
+<script src="bootstrap.bundle.min.js"></script>
+</body>
+</html>

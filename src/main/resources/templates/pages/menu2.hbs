@@ -1,0 +1,132 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Menu | Coffee Shop SCE</title>
+    {{> partials/favicons.hbs}}
+    <link href="/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+    <style>
+        #takeout-controls {
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            align-items: center;
+            grid-gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+{{> partials/headerOther.hbs email=email role=role}}
+<main>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Coffee Shop SCE Menu</h1>
+                {{#if status}}
+                    <p class="lead text-muted">Make changes to your order</p>
+                {{else}}
+                    <p class="lead text-muted">Details of completed order #{{ takeoutId }}</p>
+                {{/if}}
+            </div>
+            <form method="get" action="/menu/{{takeoutId}}">
+                <p class="lead text-muted">Sort by: </p>
+                <div class="d-flex">
+                    <select name="sort" class="form-select" aria-label="Default select example">
+                        {{~#if isNoneSelected}}
+                            <option value="none" selected>Select...</option>
+                        {{~^~}}
+                            <option value="none">Select...</option>
+                        {{~/if~}}
+                        {{~#if isPriceAscSelected}}
+                            <option value="price-asc" selected>Price increase</option>
+                        {{~^~}}
+                            <option value="price-asc">Price increase</option>
+                        {{~/if~}}
+                        {{~#if isPriceDescSelected}}
+                            <option value="price-desc" selected>Price decrease</option>
+                        {{~^~}}
+                            <option value="price-desc">Price decrease</option>
+                        {{~/if~}}
+                        {{~#if isPopularitySelected}}
+                            <option value="popularity" selected>Popularity (top 3)</option>
+                        {{~^~}}
+                            <option value="popularity">Popularity (top {{topLimit}})</option>
+                        {{~/if~}}
+                        {{~#if isOfTheDaySelected}}
+                            <option value="oftheday" selected>Drink/dish of the day</option>
+                        {{~^~}}
+                            <option value="oftheday">Drink/dish of the day</option>
+                        {{~/if~}}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Sort</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <form method="POST" action="/takeout/{{ takeoutId }}">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                {{#each menuItems}}
+                <div class="col list-item">
+                    <div class="card shadow-sm" style="min-height: 396px;">
+                        <div style="width: 100%; height: 225px; text-align: center;">
+                            <img src="../{{ type }}-{{ consumableId }}.jpg" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                        <div class="card-body consumable" id="consumable-{{@index}}" data-price="{{ price }}">
+                            <h3>{{ title }}</h3>
+                            <input type="text" style="display: none" name="consumable" value="{{ title }}" />
+                            <input name="consumableId" value="{{ consumableId }}" hidden/>
+                            <p class="card-text">{{ description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                {{#if status}}
+                                    {{~#if inStock}}
+                                        <div class="btn-group">
+                                            <input type="number" min="0" max="{{ inStock }}" step="1" style="width: 45px;" value="{{ quantity }}" class="consumable-counter" name="quantity"
+                                                   {{~#unless status}}disabled{{~/unless~}}
+                                            />
+                                        </div>
+                                        <small class="text-muted price">Price: {{ price }}</small>
+                                        <small class="text-muted price">In Stock: {{ inStock }}</small>
+                                    {{~^~}}
+                                        <input type="number" min="0" max="{{ inStock }}" step="1" style="width: 45px;" value="{{ quantity }}" class="consumable-counter" name="quantity" hidden/>
+                                        OUT OF STOCK
+                                    {{~/if~}}
+                                {{else}}
+                                        <div class="btn-group">
+                                            <input type="number" min="0" max="{{ inStock }}" step="1" style="width: 45px;" value="{{ quantity }}" class="consumable-counter" name="quantity" disabled/>
+                                        </div>
+                                        <small class="text-muted price">Price: {{ price }}</small>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                <div id="takeout-controls">
+                    <p id="total-amount" data-amount="{{ amountDue }}">Amount
+                        {{#if status}}due{{else}}paid{{/if}}: {{ amountDue }}</p>
+                    <p>
+                        {{~#if status}}
+                            <input id="takeout-btn" class="takeout-btn btn btn-primary my-2" type="submit" value="Next" />
+                        {{~/if~}}
+                    </p>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</main>
+{{> partials/footerOther.hbs}}
+<script src="/script.js"></script>
+<script src="/menu.js"></script>
+<script src="/truncate-price.js"></script>
+<script src="/bootstrap.bundle.min.js"></script>
+</body>
+</html>

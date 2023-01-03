@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Confirm Reservation | Coffee Shop SCE</title>
+    <link href="/bootstrap.min.css" rel="stylesheet">
+    {{> partials/favicons.hbs}}
+    <link href="/form-validation.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+    <style>
+        .takeout-info {
+            height: 94vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body class="bg-light">
+{{> partials/headerOther.hbs email=email role=role}}
+<div class="container takeout-info">
+    <main>
+        <div class="py-5 text-center">
+            <h2>Finish reserving your spot</h2>
+            <p class="lead">
+                Complete your order by making a payment
+            </p>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">Date: {{ reservationDate }}</span>
+                    <span class="badge bg-primary rounded-pill">{{ quantity }}</span>
+                </h4>
+                <ul class="list-group mb-3">
+                    {{#each cartItems}}
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Table {{ id }}</h6>
+                            <small class="text-muted price"> Hours: {{ hoursTotal }} x {{ rate }} </small>
+                        </div>
+                        <span class="text-muted price"> {{ totalSpentAmount }} </span>
+                        </li>
+                    {{/each}}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total:</span>
+                        <strong class="price">{{ orderTotal }}</strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-7 col-lg-8">
+                <form class="needs-validation" method="POST" action="/reservation/finish/new">
+                    <h4 class="mb-3">Payment</h4>
+
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label for="cc-name" class="form-label">Name on card</label>
+                            <input type="text" pattern="[a-zA-Z\s]*$" name="fullName" class="form-control" id="cc-name" placeholder="John Smith" required>
+                            <small class="text-muted">Full name as displayed on card</small>
+                            <div class="invalid-feedback">
+                                Name on card is required
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cc-number" class="form-label">Credit card number</label>
+                            <input type="text" name="cardNumber" pattern="[0-9\s]*{16, 19}$" class="form-control" id="cc-number" placeholder="0000 0000 0000 0000" required>
+                            <div class="invalid-feedback">
+                                Credit card number is required
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-expiration" class="form-label">Expiration</label>
+                            <input type="text" name="expiration" pattern="[0-9\\]*{5}$" class="form-control" id="cc-expiration" placeholder="12/22" required>
+                            <div class="invalid-feedback">
+                                Expiration date required
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-cvv" class="form-label">CVV</label>
+                            <input type="text" name="cvv" pattern="[0-9]*{3, 4}$" class="form-control" id="cc-cvv" placeholder="123" required>
+                            <div class="invalid-feedback">
+                                Security code required
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <input name="reservationDate" value="{{ reservationDateRaw }}" hidden/>
+                    {{#each cartItems}}
+                        <input name="tableId" value="{{ id }}" hidden/>
+                        <input name="hoursList" value="{{ hoursListString }}" hidden/>
+                    {{/each}}
+                    <button type="submit" class="w-100 btn btn-primary btn-lg" id="confirm-takeout">Confirm</button>
+                </form>
+                {{~#if isSecondAttempt}}
+                    {{> partials/toast.hbs
+                            toastTitle=toastTitle
+                            toastSubtitle=toastSubtitle
+                            toastBody=toastBody
+                    }}
+                {{~/if~}}
+
+                {{~#if isSuccess}}
+                    {{> partials/toast.hbs
+                            toastTitle=toastTitle
+                            toastSubtitle=toastSubtitle
+                            toastBody=toastBody
+                    }}
+                    <script src="/redirect.js"></script>
+                {{~/if~}}
+            </div>
+        </div>
+    </main>
+    {{> partials/footerOther.hbs}}
+</div>
+<script src="/bootstrap.bundle.min.js"></script>
+<script src="/form-validation.js"></script>
+<script src="/script.js"></script>
+<script src="/truncate-price.js"></script>
+</body>
+</html>
+

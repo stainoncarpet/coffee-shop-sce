@@ -1,0 +1,16 @@
+<header class="mb-auto">
+      <div>
+        <h3 class="float-md-start mb-0">Coffee Shop SCE</h3>
+        <nav class="nav nav-masthead justify-content-center float-md-end">
+          <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="/">Home</a>
+            <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="/menu/new">Menu</a>
+            <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="/reservation/new">Reserve</a>
+            {{~#if jwt}}
+                <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="/profile">Profile</a>
+            {{~^~}}
+                <a class="nav-link fw-bold py-1 px-0" href="/signup">Sign up</a>
+                <a class="nav-link fw-bold py-1 px-0" href="/signin">Sign in</a>
+            {{~/if~}}
+        </nav>
+      </div>
+</header>

@@ -1,0 +1,78 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.104.2">
+    <title>Profile | Coffee Shop SCE</title>
+    {{> partials/favicons.hbs}}
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+{{> partials/headerOther.hbs email=email role=role}}
+<main class="container">
+    <div class="bg-light p-5 rounded">
+        <h1>Orders list</h1>
+        <p class="lead">Here's a list of your orders</p>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Order #</th>
+            <th scope="col">Created on</th>
+            <th scope="col">Status</th>
+            <th scope="col">Amount</th>
+            <th scope="col">View/Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#orders}}
+                <tr class="table">
+                <th scope="row">{{ id }}</th>
+                <td>{{ creationDate }}</td>
+                <td>{{ status }}</td>
+                <td>{{ orderTotal }}</td>
+                    <td>
+                        <a type="button" class="btn btn-outline-primary" href="/menu/{{id}}">VIEW/EDIT</a>
+                    </td>
+            </tr>
+        {{/orders}}
+        </tbody>
+    </table>
+
+    <div class="bg-light p-5 rounded">
+        <h1>Reservations list</h1>
+        <p class="lead">Here's a list of your reservations</p>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Reservation #</th>
+            <th scope="col">Created on</th>
+            <th scope="col">Reserved for</th>
+            <th scope="col">Status</th>
+            <th scope="col">Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#reservations}}
+            <tr class="table">
+                <th scope="row">{{ id }}</th>
+                <td>{{ creationDate }}</td>
+                <td>{{ reservationDate }}</td>
+                <td>{{ status }}</td>
+                <td>{{ orderTotal }}</td>
+            </tr>
+        {{/reservations}}
+        </tbody>
+    </table>
+</main>
+{{> partials/footerOther.hbs}}
+<script src="script.js"></script>
+<script src="bootstrap.bundle.min.js"></script>
+</body>
+</html>

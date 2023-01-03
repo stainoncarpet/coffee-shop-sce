@@ -1,0 +1,111 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Booking | Coffee Shop SCE</title>
+    {{> partials/favicons.hbs}}
+    <link href="/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+    <style>
+        #reservation-controls {
+            //visibility: hidden;
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            align-items: center;
+            grid-gap: 1rem;
+        }
+
+        .hour-option {
+            display: flex;
+            align-items: center;
+        }
+
+        #reservation-date-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #reserve-btn {
+            visibility: hidden;
+        }
+
+        #total-amount {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+{{> partials/headerOther.hbs email=email role=role}}
+<main>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Coffee Shop SCE Table Reservation</h1>
+                <p class="lead text-muted">Here you can reserve a table.</p>
+                <p>Pick a date:
+                <form method="POST" action="/reservation/new" id="reservation-date-form">
+                    <input type="date" id="reservation-date" name="reservationDate" value="{{ reservationDate }}" required="required"  min="{{ minDate }}" max="2099-09-13" />
+                    <button type="submit" class="btn btn-primary">Go</button>
+                </form>
+                </p>
+                </div>
+        </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <form method="POST" action="/reservation/confirm/new">
+                <input type="date" id="reservation-date" name="reservationDate" value="{{ reservationDate }}" max="2099-09-13" hidden/>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+            {{#each reservationItems}}
+                <div class="col list-item">
+                    <div class="card shadow-sm" style="min-height: 396px;">
+                            <div style="width: 100%; height: 225px; text-align: center;">
+                            <img src="../table-{{ id }}.jpg" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                        <div class="card-body table no-justify" id="table-{{ @index }}" data-price="{{ rate }}">
+                            <h3>Table {{ id }}</h3>
+                            <h6 class="card-text my-3">A table for {{ seats }} persons <small class="text-muted price">hourly rate: {{ rate }}</small>
+                            </h6>
+
+                            <div class="d-flex flex-column">
+                                <p>Date: {{ reservationDate }}</p>
+                                <p>Location: {{ location }}</p>
+                            <p>Available hours: </p>
+                            {{#each availableHours}}
+                                <div class="form-check hour-option">
+                                    <input class="form-check-input" name="{{ id }}" type="checkbox" value="{{ this }}" id="hour-{{ id }}-{{@index}}">
+                                    <label class="form-check-label" for="hour-{{ id }}-{{@index}}">
+                                        {{ this }}
+                                    </label>
+                                </div>
+                            {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+                <div id="reservation-controls">
+                    <p id="total-amount" data-amount="0">Amount due: 0</p>
+                    <p>
+                        <input id="reserve-btn" class="reservation-btn btn btn-primary my-2" type="submit" value="Next" />
+                    </p>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</main>
+{{> partials/footerOther.hbs}}
+<script src="/script.js"></script>
+<script src="/reservation.js"></script>
+<script src="/bootstrap.bundle.min.js"></script>
+</body>
+</html>
